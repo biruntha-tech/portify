@@ -1,0 +1,28 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "portfoliomaker-c20c5",
+          "appId": "1:496650600840:android:43266c9875e11ad3b17a3d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "portfoliomaker-c20c5",
+          "configurations": {
+            "android": "1:496650600840:android:43266c9875e11ad3b17a3d",
+            "ios": "1:496650600840:ios:88a623c62fcd6527b17a3d",
+            "macos": "1:496650600840:ios:88a623c62fcd6527b17a3d",
+            "web": "1:496650600840:web:ab8472ab611ef8c4b17a3d",
+            "windows": "1:496650600840:web:6d216cef7a993a2eb17a3d"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "496650600840",
+    "project_id": "portfoliomaker-c20c5",
+    "storage_bucket": "portfoliomaker-c20c5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496650600840:android:856c6fc9368474b3b17a3d",
+        "android_client_info": {
+          "package_name": "com.example.protfolio_website_maker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496650600840-mamc5smbos7o5r3rqqkbtrpktbljhump.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.protfolio_website_maker",
+            "certificate_hash": "ba7d272343c8942cde3a816a49bb08bb58f595c5"
+          }
+        },
+        {
+          "client_id": "496650600840-9qli3mjjvt194s9ht7cqcrbt4f6qfvi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrM-uWEhG7o0n6CODWL2yWkAYW1TD6kck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496650600840-9qli3mjjvt194s9ht7cqcrbt4f6qfvi3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496650600840:android:43266c9875e11ad3b17a3d",
+        "android_client_info": {
+          "package_name": "com.portify.portify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496650600840-9qli3mjjvt194s9ht7cqcrbt4f6qfvi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrM-uWEhG7o0n6CODWL2yWkAYW1TD6kck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496650600840-9qli3mjjvt194s9ht7cqcrbt4f6qfvi3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
