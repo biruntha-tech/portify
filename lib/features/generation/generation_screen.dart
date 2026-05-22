@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/services/github_service.dart';
 import '../../core/templates/portfolio_template.dart';
 import '../auth/login_screen.dart';
@@ -108,6 +110,20 @@ class _GenerationScreenState extends ConsumerState<GenerationScreen> {
       
       portfoliosJson.add(jsonEncode(newPortfolio));
       await prefs.setStringList('portfolios', portfoliosJson);
+
+      // Save to Firebase Firestore permanently
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .collection('portfolios')
+              .add(newPortfolio);
+        }
+      } catch (e) {
+        debugPrint('Firestore save error: $e');
+      }
 
       if (!mounted) return;
       setState(() {

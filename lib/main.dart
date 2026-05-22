@@ -26,7 +26,7 @@ class PortifyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Portify',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
       home: const LoginScreen(),
     );
   }
