@@ -59,14 +59,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - lib/app_logo.png
+    - assets/images/1.png
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "lib/app_logo.png"
-  adaptive_icon_background: "#000000"
-  adaptive_icon_foreground: "lib/app_logo_foreground.png"
+  image_path: "assets/images/1.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/1.png"
   remove_alpha_ios: true
 
   # An image asset can refer to one or more resolution-specific "variants", see
