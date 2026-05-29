@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../builder/builder_form_screen.dart';
+import 'live_preview_screen.dart';
 
 import '../../core/templates/html_templates.dart';
 import 'dart:ui';
@@ -14,6 +15,8 @@ class TemplateSelectionScreen extends StatefulWidget {
 class _TemplateSelectionScreenState extends State<TemplateSelectionScreen> {
   late PageController _pageController;
   int _currentPage = 0;
+  String _selectedCategory = 'All';
+  final List<String> _categories = ['All', 'Animated', 'Creative', 'Minimal'];
 
   @override
   void initState() {
@@ -37,7 +40,13 @@ class _TemplateSelectionScreenState extends State<TemplateSelectionScreen> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Stack(
+      body: Builder(
+        builder: (context) {
+          final filteredTemplates = _selectedCategory == 'All'
+              ? appTemplates
+              : appTemplates.where((t) => t.category == _selectedCategory).toList();
+
+          return Stack(
         children: [
           // Dynamic Background (Blurred version of current template image)
           AnimatedSwitcher(
@@ -46,7 +55,9 @@ class _TemplateSelectionScreenState extends State<TemplateSelectionScreen> {
               key: ValueKey<int>(_currentPage),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(appTemplates[_currentPage].imageUrl),
+                  image: NetworkImage(filteredTemplates.isNotEmpty 
+                      ? filteredTemplates[_currentPage].imageUrl 
+                      : 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -110,23 +121,66 @@ class _TemplateSelectionScreenState extends State<TemplateSelectionScreen> {
             ),
           ),
           
-          // Carousel
+          // Filters and Carousel
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 130), // Push the carousel down so the text is visible
+                const SizedBox(height: 140),
+                // Category Filters
+                SizedBox(
+                  height: 40,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      final isSelected = _selectedCategory == category;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: FilterChip(
+                          label: Text(category),
+                          selected: isSelected,
+                          onSelected: (bool selected) {
+                            setState(() {
+                              _selectedCategory = category;
+                              _currentPage = 0;
+                              if (_pageController.hasClients) {
+                                _pageController.jumpToPage(0);
+                              }
+                            });
+                          },
+                          backgroundColor: Colors.black.withOpacity(0.2),
+                          selectedColor: Colors.white,
+                          showCheckmark: false,
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.deepPurple : Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: isSelected ? Colors.white : Colors.white54),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
                 Expanded(
-                  child: PageView.builder(
+                  child: filteredTemplates.isEmpty 
+                    ? const Center(child: Text('No templates found.', style: TextStyle(color: Colors.white)))
+                    : PageView.builder(
                     controller: _pageController,
                     onPageChanged: (index) {
                       setState(() {
                         _currentPage = index;
                       });
                     },
-                    itemCount: appTemplates.length,
+                    itemCount: filteredTemplates.length,
                     itemBuilder: (context, index) {
-                      final template = appTemplates[index];
+                      final template = filteredTemplates[index];
                       final bool isActive = index == _currentPage;
                       
                       return AnimatedContainer(
@@ -214,26 +268,50 @@ class _TemplateSelectionScreenState extends State<TemplateSelectionScreen> {
                                             ),
                                           ),
                                           const SizedBox(height: 30),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => BuilderFormScreen(template: template),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => LivePreviewScreen(template: template),
+                                                      ),
+                                                    );
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Colors.white.withOpacity(0.2),
+                                                    foregroundColor: Colors.white,
+                                                    padding: const EdgeInsets.symmetric(vertical: 20),
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                    elevation: 0,
                                                   ),
-                                                );
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.white,
-                                                foregroundColor: Colors.black87,
-                                                padding: const EdgeInsets.symmetric(vertical: 20),
-                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                elevation: 0,
+                                                  child: const Text('Demo', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                ),
                                               ),
-                                              child: const Text('Use This Design', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                            ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => BuilderFormScreen(template: template),
+                                                      ),
+                                                    );
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Colors.white,
+                                                    foregroundColor: Colors.black87,
+                                                    padding: const EdgeInsets.symmetric(vertical: 20),
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                    elevation: 0,
+                                                  ),
+                                                  child: const Text('Create', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -252,9 +330,10 @@ class _TemplateSelectionScreenState extends State<TemplateSelectionScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
+      );
+    }),
+  );
+}
 }
 
 class WavyHeaderClipper extends CustomClipper<Path> {
